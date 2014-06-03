@@ -1,0 +1,13 @@
+﻿body {
+    text-align: center;
+    background: url(./../img/background.jpg) no-repeat fixed;
+}
+
+#canvas {
+    margin: 5px auto;
+}
+
+.offscreen {
+    position: absolute;
+    top: -1000px;
+}
