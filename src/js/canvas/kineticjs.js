@@ -1,5 +1,7 @@
-﻿var kineticjs = function(){
+﻿var kineticjs = function () {
+    var frameLayer = new Kinetic.FastLayer();
     var backgroundLayer = new Kinetic.Layer();
+    var landscapeLayer = new Kinetic.Layer();
     var playerLayer = new Kinetic.Layer();
 
     function loadImages(sources, callback) {
@@ -22,6 +24,23 @@
     }
 
     function buildStage(images) {
+        stage.add(frameLayer);
+        stage.add(backgroundLayer);
+        stage.add(landscapeLayer);
+        stage.add(playerLayer);
+
+        // Frame Layer
+        var frame = new Kinetic.Image({
+            x: 0,
+            y: 0,
+            image: images.frame,
+            width: 1024,
+            height: 768
+        });
+
+        frameLayer.add(frame);
+
+        // Background Layer
         var backgroundImage = new Kinetic.Image({
             x: 0,
             y: 0,
@@ -31,12 +50,8 @@
         });
 
         backgroundLayer.add(backgroundImage);
-        stage.add(backgroundLayer);
-        backgroundLayer.setZIndex(0);
-
         backgroundImage.cache();
         backgroundImage.filters([Kinetic.Filters.Brighten]);
-        backgroundLayer.draw();
 
         var slider = document.getElementById('slider');
         slider.onchange = function () {
@@ -44,6 +59,61 @@
             backgroundLayer.batchDraw();
         };
 
+        // Landscape Layer
+        var pinkTree = new Kinetic.Image({
+            x: 570,
+            y: 50,
+            image: images.pinkTree,
+            width: 132,
+            height: 128
+        });
+
+        var greenTree = new Kinetic.Image({
+            x: 155,
+            y: 490,
+            image: images.greenTree,
+            width: 125,
+            height: 133
+        });
+
+        var brownTree = new Kinetic.Image({
+            x: 220,
+            y: 140,
+            image: images.brownTree,
+            width: 132,
+            height: 128
+        });
+
+        var rock = new Kinetic.Image({
+            x: 0,
+            y: 0,
+            image: images.rock,
+            width: 319,
+            height: 237
+        });
+
+        var bush = new Kinetic.Image({
+            x: 670,
+            y: 270,
+            image: images.bush,
+            width: 33,
+            height: 33
+        });
+
+        landscapeLayer.add(rock);
+        landscapeLayer.add(pinkTree);
+        landscapeLayer.add(greenTree);
+        landscapeLayer.add(brownTree);
+        landscapeLayer.add(bush);
+
+        //backgroundImage.setZIndex(0);
+        //rock.setZIndex(2000);
+        //pinkTree.setZIndex(2000);
+        //greenTree.setZIndex(2000);
+        //brownTree.setZIndex(2000);
+        //bush.setZIndex(2000);
+        
+        // Player layer
         var player = new Kinetic.Sprite({
             x: 300,
             y: 400,
@@ -89,10 +159,16 @@
         });
 
         playerLayer.add(player);
-        stage.add(playerLayer);
         playerLayer.setZIndex(1000);
 
-        var playerEventsCall = playerEvents(player, playerLayer);
+        playerLayer.draw();
+
+        frameLayer.moveToTop();
+        frameLayer.draw();
+        backgroundLayer.draw();
+        landscapeLayer.draw();
+
+        playerEvents(player, playerLayer);
 
         //// in order to ignore transparent pixels in an image when detecting
         //// events, we first need to cache the image
@@ -112,7 +188,13 @@
     });
 
     var sources = {
-        map: 'map.jpg',
+        frame: 'frame.png',
+        map: 'map.png',
+        rock: 'rock.png',
+        greenTree: 'green_tree.png',
+        brownTree: 'brown_tree.png',
+        pinkTree: 'pink_tree.png',
+        bush: 'bush.png',
         player: 'sprites/laila.png'
     };
 
