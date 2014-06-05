@@ -1,30 +1,69 @@
-﻿function playerEvents(player, playerLayer) {
-    var speed = 3;
+﻿function playerEvents(player, obstacles) {
+    var pinkTreeBottomRectangle = new Kinetic.Rect({
+        x: obstacles.pinkTree.getX() + 45,
+        y: obstacles.pinkTree.getY() + 100,
+        width: 30,
+        height: 20
+    });
+
+    var greenTreeBottomRectangle = new Kinetic.Rect({
+        x: obstacles.greenTree.getX() + 45,
+        y: obstacles.greenTree.getY() + 100,
+        width: 30,
+        height: 20
+    });
+
+    var brownTreeBottomRectangle = new Kinetic.Rect({
+        x: obstacles.brownTree.getX() + 45,
+        y: obstacles.brownTree.getY() + 100,
+        width: 30,
+        height: 20
+    });
+
+    var objects =  {
+        'pinkTreeBottomRectangle': pinkTreeBottomRectangle,
+        'greenTreeBottomRectangle': greenTreeBottomRectangle,
+        'brownTreeBottomRectangle': brownTreeBottomRectangle,
+        'rock': obstacles.rock
+    };
 
     var playerMoving = new Kinetic.Animation(function (frame) {
         var timeDiff = frame.timeDiff;
+        var nextPosition;
 
         if (timeDiff > 10) {
             switch (player.image.animation()) {
                 case 'idleLeft':
                 case 'walkingLeft':
-                    player.X -= speed;
+                    nextPosition = { X: player.X - player.speed, Y: player.Y};
+                    if (!isPlayerColliding(nextPosition, player, objects)) {
+                        player.X -= player.speed;
+                    }
                     break;
                 case 'idleUp':
                 case 'walkingUp':
-                    player.Y -= speed;
+                    nextPosition = { X: player.X, Y: player.Y - player.speed };
+                    if (!isPlayerColliding(nextPosition, player, objects)) {
+                        player.Y -= player.speed;
+                    }
                     break;
                 case 'idleRight':
                 case 'walkingRight':
-                    player.X += speed;
+                    nextPosition = { X: player.X + player.speed, Y: player.Y };
+                    if (!isPlayerColliding(nextPosition, player, objects)) {
+                        player.X += player.speed;
+                    }
                     break;
                 case 'idleDown':
                 case 'walkingDown':
-                    player.Y += speed;
+                    nextPosition = { X: player.X, Y: player.Y + player.speed };
+                    if (!isPlayerColliding(nextPosition, player, objects)) {
+                        player.Y += player.speed;
+                    }
                     break;
             }
         }
-    }, playerLayer);
+    }, player.image.getLayer());
 
     $(document).keydown(function (evt) {
         if (!playerMoving.isRunning()) {
@@ -79,22 +118,22 @@
             case 37:
                 playerMoving.stop();
                 player.image.animation('idleLeft');
-                playerLayer.draw();
+                player.image.getLayer().draw();
                 break;
             case 38:
                 playerMoving.stop();
                 player.image.animation('idleUp');
-                playerLayer.draw();
+                player.image.getLayer().draw();
                 break;
             case 39:
                 playerMoving.stop();
                 player.image.animation('idleRight');
-                playerLayer.draw();
+                player.image.getLayer().draw();
                 break;
             case 40:
                 playerMoving.stop();
                 player.image.animation('idleDown');
-                playerLayer.draw();
+                player.image.getLayer().draw();
                 break;
         }
     });

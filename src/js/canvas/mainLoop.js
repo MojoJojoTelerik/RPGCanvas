@@ -1,30 +1,21 @@
-﻿function mainLoop(player, shots, obstacles) {
+﻿function mainLoop(player, obstacles, shots) {
     var gameStatsObj = gameStats(player.life);
 
     var interval = 50;
 
-    Array.prototype.remove = function (item) {
-        var indexOfItem = this.indexOf(item);
-
-        if (indexOfItem > -1)
-        {
-            for (var index = 0; index < this.length; index++)
-            {
-                if(index === indexOfItem) {
-                    array.splice(i, 1);
-                }
-            }
-        }
-    }
+    player.image.getLayer().moveDown();
 
     var mainLoop = setInterval(function () {
+        lifeUpdate();
+        shotsUpdate();
+        //playerCollisionsCheck();
+    }, interval);
+
+    function lifeUpdate() {
         player.life--;
         gameStatsObj.setPlayerLife(player.life);
         gameStatsObj.lifeBarUpdate();
-
-        shotsUpdate();
-    }, interval);
-
+    }
 
     function shotsUpdate() {
         // Lifetime elapsed checking
