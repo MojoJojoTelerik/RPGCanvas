@@ -32,6 +32,7 @@
 
     function Player(playerImage) {
         this.image = playerImage;
+        this.speed = 3;
         var life = 200;
 
         this.lastShotTimeInSeconds = new Date().getTime() / 1000;
@@ -161,9 +162,9 @@
 
     var player = new Player(playerImage);
 
-    mainLoop(player, shots);
+    mainLoop(player, objects, shots);
 
-    playerEvents(player, playerLayer);
+    playerEvents(player, objects);
 
 
     /* var mousePos = stage.getPointerPosition();
