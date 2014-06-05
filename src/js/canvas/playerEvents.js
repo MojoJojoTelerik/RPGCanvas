@@ -1,67 +1,99 @@
 ﻿function playerEvents(player, playerLayer) {
-    var move = 3;
+    var speed = 3;
 
-    var fired = false;
+    var playerMoving = new Kinetic.Animation(function (frame) {
+        var timeDiff = frame.timeDiff;
 
-    $(document).keydown(function (evt) {
-        switch (evt.keyCode) {
-            case 37:
-                player.setX(player.getPosition().x - move);
-                break;
-            case 38:
-                player.setY(player.getPosition().y - move);
-                break;
-            case 39:
-                player.setX(player.getPosition().x + move);
-                break;
-            case 40:
-                player.setY(player.getPosition().y + move);
-                break;
+        if (timeDiff > 10) {
+            switch (player.image.animation()) {
+                case 'idleLeft':
+                case 'walkingLeft':
+                    player.X -= speed;
+                    break;
+                case 'idleUp':
+                case 'walkingUp':
+                    player.Y -= speed;
+                    break;
+                case 'idleRight':
+                case 'walkingRight':
+                    player.X += speed;
+                    break;
+                case 'idleDown':
+                case 'walkingDown':
+                    player.Y += speed;
+                    break;
+            }
         }
-    });
+    }, playerLayer);
 
     $(document).keydown(function (evt) {
-        if (!fired) {
-            fired = true;
+        if (!playerMoving.isRunning()) {
             switch (evt.keyCode) {
                 case 37:
-                    player.animation('walkingLeft');
-                    player.start();
+                    player.image.animation('walkingLeft');
                     break;
                 case 38:
-                    player.animation('walkingUp');
-                    player.start();
+                    player.image.animation('walkingUp');
                     break;
                 case 39:
-                    player.animation('walkingRight');
-                    player.start();
+                    player.image.animation('walkingRight');
                     break;
                 case 40:
-                    player.animation('walkingDown');
-                    player.start();
+                    player.image.animation('walkingDown');
                     break;
             }
         }
     });
 
+    $(document).keydown(function (evt) {
+        switch (evt.keyCode) {
+            case 32:
+                // space
+                player.shoot();
+                break;
+            case 37:
+                if (!playerMoving.isRunning()) {
+                    playerMoving.start();
+                }
+                break;
+            case 38:
+                if (!playerMoving.isRunning()) {
+                    playerMoving.start();
+                }
+                break;
+            case 39:
+                if (!playerMoving.isRunning()) {
+                    playerMoving.start();
+                }
+                break;
+            case 40:
+                if (!playerMoving.isRunning()) {
+                    playerMoving.start();
+                }
+                break;
+        }
+    });
+
     $(document).keyup(function (evt) {
-        fired = false;
-        player.stop();
         switch (evt.keyCode) {
             case 37:
-                player.animation('idleLeft');
+                playerMoving.stop();
+                player.image.animation('idleLeft');
                 playerLayer.draw();
                 break;
             case 38:
-                player.animation('idleUp');
+                playerMoving.stop();
+                player.image.animation('idleUp');
                 playerLayer.draw();
                 break;
             case 39:
-                player.animation('idleRight');
+                playerMoving.stop();
+                player.image.animation('idleRight');
                 playerLayer.draw();
                 break;
             case 40:
-                player.animation('idleDown');
+                playerMoving.stop();
+                player.image.animation('idleDown');
                 playerLayer.draw();
                 break;
         }

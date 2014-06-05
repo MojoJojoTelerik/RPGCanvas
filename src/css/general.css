@@ -1,13 +1,41 @@
 ﻿body {
+    background: url('./../img/background.jpg') no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
     text-align: center;
-    background: url(./../img/background.jpg) no-repeat fixed;
+    color: white;
 }
 
-#canvas {
+#container {
+    width: 1420px;  /* 1024px canvas + 350px svg + 30px svg margin + 2px svg border + 10px padding left and right + 4px extra */
     margin: 5px auto;
 }
 
 .offscreen {
     position: absolute;
     top: -1000px;
+}
+
+#canvas {
+    position: relative;
+    float: left;
+}
+
+#right {
+    position: relative;
+    float: left;
+    width: 350px;
+    margin: 10px 10px 10px 20px;
+    padding-right: 5px;
+    padding-left: 5px;
+    background: rgba(0,0, 0, 0.5);
+    border: 2px solid black;
+    border-color: #c77400;
+    border-radius: 10px;
+}
+
+#slider-label {
+    font-size: 20px;
 }

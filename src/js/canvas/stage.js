@@ -1,4 +1,4 @@
-﻿var kineticjs = function () {
+﻿var stage = function () {
     var frameLayer = new Kinetic.FastLayer();
     var backgroundLayer = new Kinetic.Layer();
     var landscapeLayer = new Kinetic.Layer();
@@ -34,19 +34,17 @@
             x: 0,
             y: 0,
             image: images.frame,
-            width: 1024,
-            height: 768
+            width: stage.width(),
+            height: stage.height()
         });
-
-        frameLayer.add(frame);
 
         // Background Layer
         var backgroundImage = new Kinetic.Image({
             x: 0,
             y: 0,
             image: images.map,
-            width: 1024,
-            height: 768
+            width: stage.width(),
+            height: stage.height()
         });
 
         backgroundLayer.add(backgroundImage);
@@ -100,23 +98,19 @@
             height: 33
         });
 
+        frameLayer.add(frame);
         landscapeLayer.add(rock);
         landscapeLayer.add(pinkTree);
         landscapeLayer.add(greenTree);
         landscapeLayer.add(brownTree);
         landscapeLayer.add(bush);
 
-        //backgroundImage.setZIndex(0);
-        //rock.setZIndex(2000);
-        //pinkTree.setZIndex(2000);
-        //greenTree.setZIndex(2000);
-        //brownTree.setZIndex(2000);
-        //bush.setZIndex(2000);
-        
         // Player layer
         var player = new Kinetic.Sprite({
             x: 300,
             y: 400,
+            width: 32,
+            height: 48,
             image: images.player,
             animation: 'idleDown',
             animations: {
@@ -155,11 +149,33 @@
                 ]
             },
             frameRate: 4,
-            frameIndex: 0
+            frameIndex: 0,
+            //drawHitFunc: function(context) {
+            //    var hitWidth = 50;
+            //    context.beginPath();
+            //    context.moveTo(this.getPoints()[0].x, this.getPoints()[0].y);
+            //    context.lineTo(this.getPoints()[1].x, this.getPoints()[1].y);
+            //    context.closePath();
+            //    var orgWidth = this.getStrokeWidth();
+            //    this.setStrokeWidth(hitWidth);
+            //    context.fillStrokeShape(this);
+            //    this.setStrokeWidth(orgWidth);
+            //}
+        });
+
+        var shot = new Kinetic.Image({
+            x: -100,
+            y: -100,
+            image: images.shot,
+            width: 16,
+            height: 16,
+            offset: [8, 8]
         });
 
         playerLayer.add(player);
-        playerLayer.setZIndex(1000);
+        playerLayer.setZIndex(10000);
+
+        player.start();
 
         playerLayer.draw();
 
@@ -168,17 +184,22 @@
         backgroundLayer.draw();
         landscapeLayer.draw();
 
-        playerEvents(player, playerLayer);
+        var objectsToPass = {
+            'stage': stage,
+            'frameLayer': frameLayer,
+            'backgroundLayer': backgroundLayer,
+            'landscapeLayer': landscapeLayer,
+            'playerLayer': playerLayer,
+            'playerImage': player,
+            'rock': rock,
+            'pinkTree': pinkTree,
+            'greenTree': greenTree,
+            'brownTree': brownTree,
+            'bush': bush,
+            'shotImage': shot,
+        };
 
-        //// in order to ignore transparent pixels in an image when detecting
-        //// events, we first need to cache the image
-        //player.cache();
-
-        //// next, we need to redraw the hit graph using the cached image
-        //player.drawHitFromCache();
-
-        //// finally, we need to redraw the layer hit graph
-        //layer.drawHit();
+        playerFunctions(objectsToPass);
     }
 
     var stage = new Kinetic.Stage({
@@ -195,17 +216,9 @@
         brownTree: 'brown_tree.png',
         pinkTree: 'pink_tree.png',
         bush: 'bush.png',
-        player: 'sprites/laila.png'
+        player: 'sprites/laila.png',
+        shot: 'shot.png'
     };
 
     loadImages(sources, buildStage);
-
-    //var text = new Kinetic.Text({
-    //    x: 10,
-    //    y: 10,
-    //    fontFamily: 'Calibri',
-    //    fontSize: 24,
-    //    text: '',
-    //    fill: 'black'
-    //});
 }
