@@ -32,6 +32,7 @@
 
     function Player(playerImage) {
         this.image = playerImage;
+        var life = 200;
 
         this.lastShotTimeInSeconds = new Date().getTime() / 1000;
         this.shotReuseTime = 1;
@@ -50,6 +51,19 @@
 
         this.__defineSetter__("Y", function (val) {
             this.image.setY(val);
+        });
+
+        this.__defineGetter__("life", function () {
+            return life;
+        });
+
+        this.__defineSetter__("life", function (val) {
+            if (val > 0) {
+                life = val;
+            }
+            else {
+                life = 0;
+            }
         });
 
         this.__defineGetter__("width", function () {

@@ -1,4 +1,6 @@
 ﻿function mainLoop(player, shots, obstacles) {
+    var gameStatsObj = gameStats(player.life);
+
     var interval = 50;
 
     Array.prototype.remove = function (item) {
@@ -16,6 +18,10 @@
     }
 
     var mainLoop = setInterval(function () {
+        player.life--;
+        gameStatsObj.setPlayerLife(player.life);
+        gameStatsObj.lifeBarUpdate();
+
         shotsUpdate();
     }, interval);
 
