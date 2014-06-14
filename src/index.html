@@ -8,14 +8,16 @@
     <script src="js/libs/jquery-2.1.1.js"></script>
     <script src="js/libs/kinetic-v5.1.0.js"></script>
     <script src="js/libs/raphael.js"></script>
-    <!-- custom js --> 
+    <!-- custom raphael js --> 
     <script src="js/gameStats.js"></script>
-    <script src="js/canvas/mainLoop.js"></script>
-    <script src="js/canvas/playerFunctions.js"></script>
+    <!-- custom kinetic js --> 
+    <script src="js/canvas/Game.js"></script>
+    <script src="js/canvas/Shot.js"></script>
+    <script src="js/canvas/ShotFactory.js"></script>
+    <script src="js/canvas/Player.js"></script>
+    <script src="js/canvas/Stage.js"></script>
+    <script src="js/canvas/defineObstacles.js"></script>
     <script src="js/canvas/isPlayerColliding.js"></script>
-    <script src="js/canvas/playerCollisionsCheck.js"></script>
-    <script src="js/canvas/playerEvents.js"></script>
-    <script src="js/canvas/stage.js"></script>
 </head>
 <body>
     <div id="container">
@@ -33,7 +35,36 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            stage();
+            var sources = {
+                frame: 'frame.png',
+                map: 'map.png',
+                rock: 'rock.png',
+                greenTree: 'green_tree.png',
+                brownTree: 'brown_tree.png',
+                pinkTree: 'pink_tree.png',
+                bush: 'bush.png',
+                player: 'sprites/laila.png',
+                shot: 'shot.png'
+            };
+
+            function loadImages(sources) {
+                var assetDir = './img/';
+                var images = {};
+                var loadedImages = 0;
+                var numberOfImages = Object.keys(sources).length;
+
+                for (var key in sources) {
+                    images[key] = new Image();
+                    images[key].onload = function () {
+                        if (++loadedImages >= numberOfImages) {
+                            new Game(images);
+                        }
+                    };
+                    images[key].src = assetDir + sources[key];
+                }
+            }
+
+            loadImages(sources);
         }, false);
     </script>
 </body>
