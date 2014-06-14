@@ -3,6 +3,21 @@
     var shotFactory = new ShotFactory(stage.shotImage, stage.playerLayer);
     var player = new Player(stage.playerImage, shotFactory);
     var obstacles = defineObstacles(stage.objectsOnStage);
+    var gameSvgStatistics = gameStats(player.life);
+
+    player.layer.moveDown();
+    events(player, obstacles);
+
+    var mainLoop = setInterval(function () {
+        lifeUpdate();
+        shotFactory.checkShotsLifeTimeElapsed();
+    }, 50);
+
+    function lifeUpdate() {
+        player.life--;
+        gameSvgStatistics.setPlayerLife(player.life);
+        gameSvgStatistics.lifeBarUpdate();
+    }
 
     function events(player, obstacles) {
         var playerMoving = new Kinetic.Animation(function (frame) {
@@ -117,24 +132,5 @@
                     break;
             }
         });
-    }
-
-    events(player, obstacles);
-
-    var gameStatsObj = gameStats(player.life);
-
-    var interval = 50;
-
-    player.layer.moveDown();
-
-    var mainLoop = setInterval(function () {
-        lifeUpdate();
-        shotFactory.checkShotsLifeTimeElapsed();
-    }, interval);
-
-    function lifeUpdate() {
-        player.life--;
-        gameStatsObj.setPlayerLife(player.life);
-        gameStatsObj.lifeBarUpdate();
     }
 }
