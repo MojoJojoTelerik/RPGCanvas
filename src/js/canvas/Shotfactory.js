@@ -82,7 +82,8 @@
         }
 
         for (var index in shotIndexesForRemoval) {
-            // TO DO: remove correctly from shots!
+            shots.splice(index, 1);
+			shotIndexesForRemoval.splice(index, 1);
         }
     };
 }
