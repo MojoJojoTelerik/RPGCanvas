@@ -8,7 +8,10 @@
     this.frameLayer = new Kinetic.FastLayer();
     this.backgroundLayer = new Kinetic.Layer();
     this.playerLayer = new Kinetic.Layer();
-    this.enemyLayer = new Kinetic.Layer();
+    this.enemyLayer = new Kinetic.Layer({
+        width: 1024,
+        height: 768
+	});
     this.landscapeLayer = new Kinetic.Layer();
     this.objectsOnStage = {};
 
@@ -147,50 +150,12 @@
     });
 
     // Enemy layer
-    this.enemyImage = new Kinetic.Sprite({
-        x: 400,
-        y: 500,
-        width: 32,
-        height: 32,
+    this.enemyImage = new Kinetic.Image({
+        x: -100,
+        y: -100,
         image: images.enemy,
-        animation: 'idleDown',
-        animations: {
-            // x, y, width, height
-            idleDown: [
-                33, 0, 32, 32
-            ],
-            idleLeft: [
-                33, 33, 32, 32
-            ],
-            idleRight: [
-                33, 66, 32, 32
-            ],
-            idleUp: [
-                33, 99, 32, 32
-            ],
-            walkingDown: [
-                0, 0, 32, 32,
-                33, 0, 32, 32,
-                65, 0, 32, 32
-            ],
-            walkingLeft: [
-                0, 33, 32, 32,
-                33, 33, 32, 32,
-                65, 33, 32, 32
-            ],
-            walkingRight: [
-                0, 66, 32, 32,
-                33, 66, 32, 32,
-                65, 66, 32, 32
-            ],
-            walkingUp: [
-                0, 99, 32, 32,
-                33, 99, 32, 32,
-                65, 99, 32, 32
-            ]
-        },
-        frameRate: 3,
-        frameIndex: 0
+        width: 32,
+        height: 32
     });
 
     this.shotImage = new Kinetic.Image({
@@ -198,14 +163,12 @@
         y: -100,
         image: images.shot,
         width: 16,
-        height: 16,
-        offset: [8, 8]
+        height: 16
     });
 
     this.playerLayer.add(this.playerImage);
     this.playerLayer.setZIndex(10000);
 
-    this.enemyLayer.add(this.enemyImage);
     this.playerImage.start();
 
     this.frameLayer.moveToTop();
