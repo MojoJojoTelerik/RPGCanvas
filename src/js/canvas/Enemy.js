@@ -1,7 +1,13 @@
-function Enemy(enemyImage){
-    this.image = enemyImage;
-    this.layer = this.image.getLayer();
+function Enemy(enemyImage,xCoord,yCoord){
+
+    this.image = enemyImage.clone();
     this.speed = 3;
+    this.layer = new Kinetic.Layer();
+    this.isForRemoving = false;
+    this.image.setX(xCoord);
+    this.image.setY(yCoord);
+
+    stage.add(this.layer);
 
     this.__defineGetter__("X", function () {
         return this.image.getX();
@@ -26,6 +32,10 @@ function Enemy(enemyImage){
     this.__defineGetter__("height", function () {
         return this.image.getHeight();
     });
+
+
+    this.layer.add(this.image);
     this.image.start();
     this.layer.draw();
+
 }
