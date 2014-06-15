@@ -76,7 +76,6 @@
                     images[key].onload = function () {
                         if (++loadedImages >= numberOfImages) {
                             new Game(images);
-                            startMusic();
                         }
                     };
                     images[key].src = assetDir + sources[key];
@@ -84,17 +83,6 @@
             }
 
             loadImages(sources);
-
-            function startMusic() {
-                var audio = $("audio")[0];
-                audio.play();
-                audio.volume = 0.5;
-
-                var sliderVolume = document.getElementById('slider-volume');
-                sliderVolume.onchange = function () {
-                    audio.volume = sliderVolume.value;
-                }
-            }
         }, false);
     </script>
 </body>
