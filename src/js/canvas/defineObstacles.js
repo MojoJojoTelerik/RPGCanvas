@@ -21,6 +21,9 @@
     });
 
     return {
+        'pinkTree' : objectsOnStage.pinkTree,
+        'brownTree': objectsOnStage.brownTree,
+        'greenTree': objectsOnStage.greenTree,
         'pinkTreeBottomRectangle': pinkTreeBottomRectangle,
         'greenTreeBottomRectangle': greenTreeBottomRectangle,
         'brownTreeBottomRectangle': brownTreeBottomRectangle,

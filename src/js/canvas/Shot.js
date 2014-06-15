@@ -1,9 +1,8 @@
-﻿function Shot(shotImage, direction) {
+﻿function Shot(shotImage, originalPositionX, originalPositionY, direction) {
     this.image = shotImage.clone();
     this.lifespan = 250;
     this.speed = 6;
     this.direction = direction;
-    this.originalPosition = [];
     this.isForRemoving = false;
 
     this.__defineGetter__("X", function () {
@@ -21,6 +20,10 @@
     this.__defineSetter__("Y", function (val) {
         this.image.setY(val);
     });
+
+    this.X = originalPositionX;
+    this.Y = originalPositionY;
+    this.originalPosition = [this.X, this.Y];
 
     this.animate = function () { };
 }

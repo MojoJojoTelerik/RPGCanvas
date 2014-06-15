@@ -1,10 +1,10 @@
 ﻿function Player(playerImage, shotFactory) {
-    //var shots = [];
     var life = 200;
 
     this.image = playerImage;
     this.layer = this.image.getLayer();
     this.speed = 3;
+    this.isBehindTrees = false;
 
     this.__defineGetter__("X", function () {
         return this.image.getX();
@@ -43,8 +43,32 @@
         return this.image.getHeight();
     });
 
+    this.__defineGetter__("direction", function () {
+        var directionFacing;
+
+        var animationName = this.image.animation();
+        switch (animationName) {
+            case 'idleLeft':
+            case 'walkingLeft':
+                directionFacing = 'left';
+                break;
+            case 'idleUp':
+            case 'walkingUp':
+                directionFacing = 'up';
+                break;
+            case 'idleRight':
+            case 'walkingRight':
+                directionFacing = 'right';
+                break;
+            case 'idleDown':
+            case 'walkingDown':
+                directionFacing = 'down';
+        }
+
+        return directionFacing;
+    });
+
     this.shoot = function () {
-        var direction = this.image.animation();
-        shotFactory.createShot(this, direction);
+        shotFactory.createShot(this);
     };
 }
