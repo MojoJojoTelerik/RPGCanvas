@@ -2,7 +2,6 @@
     var stage = new Stage(images);
     var shotFactory = new ShotFactory(stage.shotImage, stage.playerLayer);
     var player = new Player(stage.playerImage, shotFactory);
-    var enemy = new Player(stage.enemyImage);
     var obstacles = defineObstacles(stage.objectsOnStage);
     var gameSvgStatistics = gameStats(player.life);
 
