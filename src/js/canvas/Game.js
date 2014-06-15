@@ -19,8 +19,8 @@
             this.isGameOver = true;
             gameOver(stage.stage, player);
         }
-        shotFactory.shotsUpdate();
-        enemyFactory.enemiesUpdate(shotFactory.shots);
+        shotFactory.shotsUpdate(player.life);
+        enemyFactory.enemiesUpdate(shotFactory.shots, player);
     }, 100);
 
     var playerLifeDown = setInterval(function () {
@@ -31,7 +31,7 @@
 
     var addNewEnemy = setInterval(function () {
         enemyFactory.createEnemy();
-    }, 5000);
+    }, 1000);
 
     function eventsStart(player, obstacles) {
         var playerMoving = new Kinetic.Animation(function (frame) {

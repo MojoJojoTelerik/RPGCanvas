@@ -8,7 +8,10 @@
     this.frameLayer = new Kinetic.FastLayer();
     this.backgroundLayer = new Kinetic.Layer();
     this.playerLayer = new Kinetic.Layer();
-    this.enemyLayer = new Kinetic.Layer();
+    this.enemyLayer = new Kinetic.Layer({
+        width: 1024,
+        height: 768
+	});
     this.landscapeLayer = new Kinetic.Layer();
     this.objectsOnStage = {};
 
@@ -205,7 +208,6 @@
     this.playerLayer.add(this.playerImage);
     this.playerLayer.setZIndex(10000);
 
-    this.enemyLayer.add(this.enemyImage);
     this.playerImage.start();
 
     this.frameLayer.moveToTop();

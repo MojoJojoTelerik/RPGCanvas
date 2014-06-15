@@ -27,11 +27,14 @@
     });
 
     this.__defineSetter__("life", function (val) {
-        if (val > 0) {
+        if (val > 0 && val < 200) {
             life = val;
         }
-        else {
+        else if (val < life) {
             life = 0;
+        }
+        else if (val > life) {
+            life = 200;
         }
     });
 
