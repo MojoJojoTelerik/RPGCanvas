@@ -4,6 +4,7 @@
     var player = new Player(stage.playerImage, shotFactory);
     var obstacles = defineObstacles(stage.objectsOnStage);
     var gameSvgStatistics = gameStats(player.life);
+    var enemy = new Enemy(stage.enemyImage);
 
     player.layer.moveDown();
     player.isBehindTrees = true;
