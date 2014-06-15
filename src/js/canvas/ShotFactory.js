@@ -1,5 +1,5 @@
-﻿function ShotFactory(shotImage, shotLayer, shotEnemy) {
-    var shots = [];
+﻿function ShotFactory(shotImage, shotLayer) {
+    this.shots = [];
 
     this.layer = shotLayer;
     this.lastShotTimeInSeconds = new Date().getTime() / 1000;
@@ -62,17 +62,17 @@
             }, this.layer);
 
             shot.animate.start();
-            shots.push(shot);
+            this.shots.push(shot);
 
             this.layer.draw();
         }
     };
 
-    this.checkShotsLifeTimeElapsed = function () {
+    this.shotsUpdate = function () {
         var shotIndexesForRemoval = [];
-
-        for (var key in shots) {
-            var currentShot = shots[key];
+		
+        for (var key in this.shots) {
+            var currentShot = this.shots[key];
 
             if (currentShot.isForRemoving) {
                 currentShot.animate.stop();
@@ -82,18 +82,8 @@
         }
 
         for (var index in shotIndexesForRemoval) {
-            shots.splice(index, 1);
+            this.shots.splice(index, 1);
             shotIndexesForRemoval.splice(index, 1);
-        }
-        if (shots.length != 0) {
-            for (var i = 0; i < shotEnemy.length; i = i + 1) {
-                if (detectCollision(currentShot.image, shotEnemy[i].image)) {
-                    currentShot.isForRemoving = true;
-                    shotEnemy[i].image.remove();
-                    shotEnemy.splice(i, 1);
-                    console.log('Impact');
-                }
-            }
         }
     };
 }

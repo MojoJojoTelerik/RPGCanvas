@@ -2,11 +2,8 @@
 	this.isGameOver = false;
 
     var stage = new Stage(images);
-    var enemies = [
-        new Enemy(stage.enemyImage,300,300),
-        new Enemy(stage.enemyImage,300,500)
-    ];
-    var shotFactory = new ShotFactory(stage.shotImage, stage.playerLayer, enemies);
+    var shotFactory = new ShotFactory(stage.shotImage, stage.playerLayer);
+    var enemyFactory = new EnemyFactory(stage.enemyImage, stage.enemyLayer);
     var player = new Player(stage.playerImage, shotFactory);
     var obstacles = defineObstacles(stage.objectsOnStage);
     var gameSvgStatistics = gameStats(player.life);
@@ -22,7 +19,8 @@
             this.isGameOver = true;
             gameOver(stage.stage, player);
         }
-        shotFactory.checkShotsLifeTimeElapsed();
+        shotFactory.shotsUpdate();
+        enemyFactory.enemiesUpdate(shotFactory.shots);
     }, 100);
 
     var playerLifeDown = setInterval(function () {
@@ -32,7 +30,7 @@
     }, 100);
 
     var addNewEnemy = setInterval(function () {
-        enemies += new Enemy(stage.enemyImage,250,450);
+        enemyFactory.createEnemy();
     }, 5000);
 
     function eventsStart(player, obstacles) {
