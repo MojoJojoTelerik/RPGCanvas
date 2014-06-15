@@ -1,10 +1,13 @@
 ﻿function Game(images) {
     var stage = new Stage(images);
-    var shotFactory = new ShotFactory(stage.shotImage, stage.playerLayer);
+    var enemies = [
+        new Enemy(stage.enemyImage,300,300),
+        new Enemy(stage.enemyImage,300,500)
+    ];
+    var shotFactory = new ShotFactory(stage.shotImage, stage.playerLayer, enemies);
     var player = new Player(stage.playerImage, shotFactory);
     var obstacles = defineObstacles(stage.objectsOnStage);
     var gameSvgStatistics = gameStats(player.life);
-    var enemy = new Enemy(stage.enemyImage);
 
     player.layer.moveDown();
     player.isBehindTrees = true;
@@ -20,6 +23,10 @@
         gameSvgStatistics.setPlayerLife(player.life);
         gameSvgStatistics.lifeBarUpdate();
     }, 100);
+
+    var addNewEnemy = setInterval(function () {
+        enemies += new Enemy(stage.enemyImage,250,450);
+    }, 5000);
 
     function events(player, obstacles) {
         var playerMoving = new Kinetic.Animation(function (frame) {
