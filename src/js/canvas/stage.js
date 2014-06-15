@@ -204,8 +204,8 @@
 
     this.playerLayer.add(this.playerImage);
     this.playerLayer.setZIndex(10000);
-    this.enemyLayer.add(this.enemyImage);
 
+    this.enemyLayer.add(this.enemyImage);
     this.playerImage.start();
 
     this.frameLayer.moveToTop();
@@ -230,7 +230,7 @@
         'pinkTree': pinkTree,
         'greenTree': greenTree,
         'brownTree': brownTree,
-        'bush': bush,
+        'bush': bush
     };
 
     function addBrightnessSlider(affectedObjects, layers) {

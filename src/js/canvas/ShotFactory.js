@@ -1,4 +1,4 @@
-﻿function ShotFactory(shotImage, shotLayer) {
+﻿function ShotFactory(shotImage, shotLayer, shotEnemy) {
     var shots = [];
 
     this.layer = shotLayer;
@@ -83,7 +83,17 @@
 
         for (var index in shotIndexesForRemoval) {
             shots.splice(index, 1);
-			shotIndexesForRemoval.splice(index, 1);
+            shotIndexesForRemoval.splice(index, 1);
+        }
+        if (shots.length != 0) {
+            for (var i = 0; i < shotEnemy.length; i = i + 1) {
+                if (detectCollision(currentShot.image, shotEnemy[i].image)) {
+                    currentShot.isForRemoving = true;
+                    shotEnemy[i].image.remove();
+                    shotEnemy.splice(i, 1);
+                    console.log('Impact');
+                }
+            }
         }
     };
 }
