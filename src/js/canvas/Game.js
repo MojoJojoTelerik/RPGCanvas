@@ -21,7 +21,7 @@
         }
         shotFactory.shotsUpdate(player.life);
         enemyFactory.enemiesUpdate(shotFactory.shots, player);
-    }, 100);
+    }, 500);
 
     var playerLifeDown = setInterval(function () {
         player.life--;
