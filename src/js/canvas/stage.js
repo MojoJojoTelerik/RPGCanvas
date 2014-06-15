@@ -1,5 +1,5 @@
 ﻿function Stage(images) {
-    stage = new Kinetic.Stage({
+    this.stage = new Kinetic.Stage({
         container: 'canvas',
         width: 1024,
         height: 768
@@ -12,19 +12,19 @@
     this.landscapeLayer = new Kinetic.Layer();
     this.objectsOnStage = {};
 
-    stage.add(this.frameLayer);
-    stage.add(this.backgroundLayer);
-    stage.add(this.playerLayer);
-    stage.add(this.enemyLayer);
-    stage.add(this.landscapeLayer);
+    this.stage.add(this.frameLayer);
+    this.stage.add(this.backgroundLayer);
+    this.stage.add(this.playerLayer);
+    this.stage.add(this.enemyLayer);
+    this.stage.add(this.landscapeLayer);
 
     // Frame Layer
     var frame = new Kinetic.Image({
         x: 0,
         y: 0,
         image: images.frame,
-        width: stage.width(),
-        height: stage.height()
+        width: this.stage.width(),
+        height: this.stage.height()
     });
 
     // Background Layer
@@ -32,8 +32,8 @@
         x: 0,
         y: 0,
         image: images.map,
-        width: stage.width(),
-        height: stage.height()
+        width: this.stage.width(),
+        height: this.stage.height()
     });
 
     var bush = new Kinetic.Image({

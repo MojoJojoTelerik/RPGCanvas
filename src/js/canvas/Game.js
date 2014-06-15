@@ -1,4 +1,6 @@
 ﻿function Game(images) {
+	this.isGameOver = false;
+
     var stage = new Stage(images);
     var enemies = [
         new Enemy(stage.enemyImage,300,300),
@@ -12,11 +14,16 @@
     player.layer.moveDown();
     player.isBehindTrees = true;
 
-    events(player, obstacles);
+    startMusic();
+    eventsStart(player, obstacles);
 
     var mainLoop = setInterval(function () {
+        if (player.life <= 0 && !this.isGameOver) {
+            this.isGameOver = true;
+            gameOver(stage.stage, player);
+        }
         shotFactory.checkShotsLifeTimeElapsed();
-    }, 50);
+    }, 100);
 
     var playerLifeDown = setInterval(function () {
         player.life--;
@@ -24,7 +31,7 @@
         gameSvgStatistics.lifeBarUpdate();
     }, 100);
 
-    function events(player, obstacles) {
+    function eventsStart(player, obstacles) {
         var playerMoving = new Kinetic.Animation(function (frame) {
             var timeDiff = frame.timeDiff;
             var nextPosition;
@@ -59,9 +66,9 @@
             }
         }, player.layer);
 
-        $(document).keydown(function (evt) {
+        $(document).keydown(function (event) {
             if (!playerMoving.isRunning()) {
-                switch (evt.keyCode) {
+                switch (event.keyCode) {
                     case 37:
                         player.image.animation('walkingLeft');
                         break;
@@ -78,8 +85,8 @@
             }
         });
 
-        $(document).keydown(function (evt) {
-            switch (evt.keyCode) {
+        $(document).keydown(function (event) {
+            switch (event.keyCode) {
                 case 32:
                     // space
                     player.shoot();
@@ -107,8 +114,8 @@
             }
         });
 
-        $(document).keyup(function (evt) {
-            switch (evt.keyCode) {
+        $(document).keyup(function (event) {
+            switch (event.keyCode) {
                 case 37:
                     playerMoving.stop();
                     player.image.animation('idleLeft');
@@ -132,4 +139,67 @@
             }
         });
     }
+
+    function gameOver(stage, player) {
+        displayPopUp(stage);
+
+        function displayPopUp(stage) {
+            var gameOverLayer = new Kinetic.Layer();
+
+            var gameOverText = new Kinetic.Text({
+                x: 0,
+                y: 0,
+                text: 'GAME OVER\n\n\This is the end of the road for you. Try better next time.',
+                fontSize: 25,
+                fontFamily: 'Calibri',
+                fontStyle: '500',
+                fill: '#F5009F',
+                width: 380,
+                padding: 20,
+                align: 'center'
+            });
+
+            var rect = new Kinetic.Rect({
+                x: 0,
+                y: 0,
+                stroke: '#555',
+                strokeWidth: 5,
+                fill: 'black',
+                width: 380,
+                height: gameOverText.height(),
+                shadowColor: 'black',
+                shadowBlur: 10,
+                shadowOffset: { x: 10, y: 10 },
+                shadowOpacity: 0.8,
+                cornerRadius: 10
+            });
+
+            var gameOverRectX = stage.getWidth() / 2 - 380 / 2;
+            var gameOverRectY = stage.getHeight() / 2 - gameOverText.height() / 2;
+
+            gameOverText.setX(gameOverRectX);
+            gameOverText.setY(gameOverRectY);
+            rect.setX(gameOverRectX);
+            rect.setY(gameOverRectY);
+
+            gameOverLayer.add(rect);
+            gameOverLayer.add(gameOverText);
+            stage.add(gameOverLayer);
+
+            gameOverLayer.draw();
+        }
+    }
+
+    function startMusic() {
+        var audio = $("audio")[0];
+        audio.play();
+        audio.volume = 0.5;
+
+        var sliderVolume = document.getElementById('slider-volume');
+        sliderVolume.onchange = function () {
+            audio.volume = sliderVolume.value;
+        }
+    }
+
+
 }
