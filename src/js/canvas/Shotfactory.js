@@ -5,48 +5,28 @@
     this.lastShotTimeInSeconds = new Date().getTime() / 1000;
     this.shotReuseTime = 1;
 
-    this.createShot = function (player, direction) {
+    this.createShot = function (player) {
         var currentTimeInSeconds = new Date().getTime() / 1000;
 
         if (currentTimeInSeconds > this.lastShotTimeInSeconds + this.shotReuseTime) {
             this.lastShotTimeInSeconds = currentTimeInSeconds;
 
-            var shot;
+            var shotDirection = player.direction;
+            var shotPositionX = player.X + player.width / 2;
+            var shotPositionY = player.Y + player.height / 2;
 
-            switch (direction) {
-                case 'idleLeft':
-                case 'walkingLeft':
-                    shot = new Shot(shotImage, 'left');
-                    shot.X = player.X + player.width / 2 - 20;
-                    shot.Y = player.Y + player.height / 2;
-                    shot.originalPosition = [shot.X, shot.Y];
+            switch (shotDirection) {
+                case 'left':
+                    shotPositionX -= 20;
                     break;
-                case 'idleUp':
-                case 'walkingUp':
-                    shot = new Shot(shotImage, 'up');
-                    shot.X = player.X + player.width / 2;
-                    shot.Y = player.Y + player.height / 2;
-                    shot.originalPosition = [shot.X, shot.Y];
-                    break;
-                case 'idleRight':
-                case 'walkingRight':
-                    shot = new Shot(shotImage, 'right');
-                    shot.X = player.X + player.width / 2;
-                    shot.Y = player.Y + player.height / 2;
-                    shot.originalPosition = [shot.X, shot.Y];
-                    break;
-                case 'idleDown':
-                case 'walkingDown':
-                    //var originalShotXPosition = 
-                    shot = new Shot(shotImage, 'down');
-                    shot.X = player.X + player.width / 2 - 8;
-                    shot.Y = player.Y + player.height / 2;
-                    shot.originalPosition = [shot.X, shot.Y];
+                case 'down':
+                    shotPositionX -= 8;
                     break;
             }
 
+            var shot = new Shot(shotImage, shotPositionX, shotPositionY, shotDirection);
+
             this.layer.add(shot.image);
-            this.layer.draw();
 
             shot.animate = new Kinetic.Animation(function (frame) {
                 var timeDiff = frame.timeDiff;
@@ -82,8 +62,9 @@
             }, this.layer);
 
             shot.animate.start();
-
             shots.push(shot);
+
+            this.layer.draw();
         }
     };
 

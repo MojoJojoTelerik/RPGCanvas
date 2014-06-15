@@ -6,51 +6,46 @@
     var gameSvgStatistics = gameStats(player.life);
 
     player.layer.moveDown();
+    player.isBehindTrees = true;
+
     events(player, obstacles);
 
     var mainLoop = setInterval(function () {
-        lifeUpdate();
         shotFactory.checkShotsLifeTimeElapsed();
     }, 50);
 
-    function lifeUpdate() {
+    var playerLifeDown = setInterval(function () {
         player.life--;
         gameSvgStatistics.setPlayerLife(player.life);
         gameSvgStatistics.lifeBarUpdate();
-    }
+    }, 100);
 
     function events(player, obstacles) {
         var playerMoving = new Kinetic.Animation(function (frame) {
             var timeDiff = frame.timeDiff;
             var nextPosition;
 
-            var directionFacing = player.image.animation();
-
             if (timeDiff > 10) {
-                switch (directionFacing) {
-                    case 'idleLeft':
-                    case 'walkingLeft':
+                switch (player.direction) {
+                    case 'left':
                         nextPosition = { X: player.X - player.speed, Y: player.Y };
                         if (!isPlayerColliding(nextPosition, player, obstacles)) {
                             player.X -= player.speed;
                         }
                         break;
-                    case 'idleUp':
-                    case 'walkingUp':
+                    case 'up':
                         nextPosition = { X: player.X, Y: player.Y - player.speed };
                         if (!isPlayerColliding(nextPosition, player, obstacles)) {
                             player.Y -= player.speed;
                         }
                         break;
-                    case 'idleRight':
-                    case 'walkingRight':
+                    case 'right':
                         nextPosition = { X: player.X + player.speed, Y: player.Y };
                         if (!isPlayerColliding(nextPosition, player, obstacles)) {
                             player.X += player.speed;
                         }
                         break;
-                    case 'idleDown':
-                    case 'walkingDown':
+                    case 'down':
                         nextPosition = { X: player.X, Y: player.Y + player.speed };
                         if (!isPlayerColliding(nextPosition, player, obstacles)) {
                             player.Y += player.speed;
