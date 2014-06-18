@@ -1,8 +1,8 @@
 ﻿function EnemyFactory(enemyImage, enemyLayer) {
 	this.image = enemyImage;
     this.layer = enemyLayer;
-	
     this.enemies = [];
+
     var maxEnemies = 5;
 
 	var minPositionX = 15;
@@ -15,9 +15,6 @@
 		    var initialPositionX = Math.floor(Math.random() * (maxPositionX - minPositionX) + minPositionX);
 		    var initialPositionY = Math.floor(Math.random() * (maxPositionY - minPositionY) + minPositionY);
 
-		    console.log(initialPositionX);
-		    console.log(initialPositionY);
-
 			var newEnemy = new Enemy(this.image, initialPositionX, initialPositionY);
 			this.enemies.push(newEnemy);
 
@@ -25,4 +22,6 @@
 			this.layer.draw();
 		}
     };
+
+    this.createEnemy();
 }
