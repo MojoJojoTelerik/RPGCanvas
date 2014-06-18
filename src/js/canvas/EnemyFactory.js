@@ -5,10 +5,10 @@
 
     var maxEnemies = 5;
 
-	var minPositionX = 15;
-	var maxPositionX = this.layer.getWidth() - 15;
-	var minPositionY = 15;
-	var maxPositionY = this.layer.getHeight() - 15;
+	var minPositionX = 32;
+	var maxPositionX = this.layer.getWidth() - 32;
+	var minPositionY = 32;
+	var maxPositionY = this.layer.getHeight() - 62;
 	
     this.createEnemy = function () {
 		if (this.enemies.length < maxEnemies) {

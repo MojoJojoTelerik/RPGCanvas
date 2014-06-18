@@ -15,7 +15,7 @@
     eventsStart(player, obstacles);
 
     var collisionChekingShotsEnemies = setInterval(function () {
-        shotsEnemiesColliding(shotFactory.shots, enemyFactory.enemies, player);
+        shotsEnemiesColliding(shotFactory.shots, enemyFactory.enemies, stage.enemyLayer, player);
     }, 5);
 
     var playerLifeDown = setInterval(function () {

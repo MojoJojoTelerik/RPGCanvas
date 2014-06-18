@@ -61,7 +61,7 @@
     return isColliding;
 }
 
-var shotsEnemiesColliding = function (shots, enemies, player) {
+var shotsEnemiesColliding = function (shots, enemies, enemyLayer, player) {
     var shotsIndexesForRemoval = {};
     var index;
 
@@ -91,6 +91,7 @@ var shotsEnemiesColliding = function (shots, enemies, player) {
             var enemyForRemoving = enemies[index];
 
             enemyForRemoving.image.remove();
+            enemyLayer.draw();
             enemies.splice(index, 1);
         }
     }
