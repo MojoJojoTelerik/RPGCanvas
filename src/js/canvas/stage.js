@@ -205,11 +205,15 @@
 
         slider.onchange = function () {
             for (var obj in affectedObjects) {
-                affectedObjects[obj].brightness(slider.value);
+                if (affectedObjects[obj].nodeType === 'Shape') {
+                    affectedObjects[obj].brightness(slider.value);
+                }
             }
 
             for (var key in layers) {
-                layers[key].batchDraw();
+                if (layers[key].nodeType === 'Layer') {
+                    layers[key].batchDraw();
+                }
             }
         };
     }
