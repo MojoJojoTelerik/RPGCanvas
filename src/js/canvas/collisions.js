@@ -61,23 +61,20 @@
     return isColliding;
 }
 
-var shotsEnemiesColliding = function (shots, enemies, player) {
+var shotsEnemiesColliding = function (shots, enemies, enemyLayer, player) {
     var shotsIndexesForRemoval = {};
     var index;
 
     if (shots.length !== 0 && enemies.length !== 0) {
-        var shotsCloning = shots.clone();
-        var enemiesCloning = enemies.clone();
-        
         var enemiesIndexesForRemoval = {};
         var currentEnemy;
         var currentShot;
 
-        for (var i = 0; i < shotsCloning.length; i++) {
-            currentShot = shotsCloning[i];
+        for (var i = 0; i < shots.length; i++) {
+            currentShot = shots[i];
 
-            for (var j = 0; j < enemiesCloning.length; j++) {
-                currentEnemy = enemiesCloning[j];
+            for (var j = 0; j < enemies.length; j++) {
+                currentEnemy = enemies[j];
 
                 if (detectCollision(currentShot.image, currentEnemy.image)) {
                     shotsIndexesForRemoval[i] = true;
@@ -87,11 +84,13 @@ var shotsEnemiesColliding = function (shots, enemies, player) {
             }
         }
 
-        for (index in enemiesIndexesForRemoval) {
-            var enemyForRemoving = enemies[index];
+        for (key in enemiesIndexesForRemoval) {
+            var enemyForRemoving = enemies[key];
 
             enemyForRemoving.image.remove();
-            enemies.splice(index, 1);
+            enemies.splice(key, 1);
+
+            enemyLayer.draw();
         }
     }
 

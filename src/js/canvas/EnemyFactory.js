@@ -15,10 +15,12 @@
 		    var initialPositionX = Math.floor(Math.random() * (maxPositionX - minPositionX) + minPositionX);
 		    var initialPositionY = Math.floor(Math.random() * (maxPositionY - minPositionY) + minPositionY);
 
-			var newEnemy = new Enemy(this.image, initialPositionX, initialPositionY);
+		    var newEnemy = new Enemy(this.image, initialPositionX, initialPositionY);
+
+		    this.layer.add(newEnemy.image);
+
 			this.enemies.push(newEnemy);
 
-			this.layer.add(newEnemy.image);
 			this.layer.draw();
 		}
     };

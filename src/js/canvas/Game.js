@@ -1,5 +1,10 @@
 ﻿function Game(images) {
-	this.isGameOver = false;
+    var isGameOver = false;
+
+    var isGameOverByRef = function ()
+    {
+        return isGameOver;
+    };
 
     var stage = new Stage(images);
     var shotFactory = new ShotFactory(stage.shotImage, stage.playerLayer);
@@ -12,10 +17,10 @@
     player.isBehindTrees = true;
 
     startMusic();
-    eventsStart(player, obstacles);
+    var eventsPlayer = events(player, obstacles, isGameOverByRef);
 
     var collisionChekingShotsEnemies = setInterval(function () {
-        shotsEnemiesColliding(shotFactory.shots, enemyFactory.enemies, player);
+        shotsEnemiesColliding(shotFactory.shots, enemyFactory.enemies, stage.enemyLayer, player);
     }, 5);
 
     var playerLifeDown = setInterval(function () {
@@ -24,8 +29,8 @@
         gameSvgStatistics.setPlayerLife(player.life);
         gameSvgStatistics.lifeBarUpdate();
 
-        if (player.life <= 0 && !this.isGameOver) {
-            this.isGameOver = true;
+        if (player.life <= 0 && !isGameOver) {
+            isGameOver = true;
             gameOver(stage.stage, player);
         }
     }, 1000);
@@ -34,116 +39,13 @@
         enemyFactory.createEnemy();
     }, 5000);
 
-    function eventsStart(player, obstacles) {
-        var playerMoving = new Kinetic.Animation(function (frame) {
-            var timeDiff = frame.timeDiff;
-            var nextPosition;
-
-            if (timeDiff > 10) {
-                switch (player.direction) {
-                    case 'left':
-                        nextPosition = { X: player.X - player.speed, Y: player.Y };
-                        if (!isPlayerColliding(nextPosition, player, obstacles)) {
-                            player.X -= player.speed;
-                        }
-                        break;
-                    case 'up':
-                        nextPosition = { X: player.X, Y: player.Y - player.speed };
-                        if (!isPlayerColliding(nextPosition, player, obstacles)) {
-                            player.Y -= player.speed;
-                        }
-                        break;
-                    case 'right':
-                        nextPosition = { X: player.X + player.speed, Y: player.Y };
-                        if (!isPlayerColliding(nextPosition, player, obstacles)) {
-                            player.X += player.speed;
-                        }
-                        break;
-                    case 'down':
-                        nextPosition = { X: player.X, Y: player.Y + player.speed };
-                        if (!isPlayerColliding(nextPosition, player, obstacles)) {
-                            player.Y += player.speed;
-                        }
-                        break;
-                }
-            }
-        }, player.layer);
-
-        $(document).keydown(function (event) {
-            if (!playerMoving.isRunning()) {
-                switch (event.keyCode) {
-                    case 37:
-                        player.image.animation('walkingLeft');
-                        break;
-                    case 38:
-                        player.image.animation('walkingUp');
-                        break;
-                    case 39:
-                        player.image.animation('walkingRight');
-                        break;
-                    case 40:
-                        player.image.animation('walkingDown');
-                        break;
-                }
-            }
-        });
-
-        $(document).keydown(function (event) {
-            switch (event.keyCode) {
-                case 32:
-                    // space
-                    player.shoot();
-                    break;
-                case 37:
-                    if (!playerMoving.isRunning()) {
-                        playerMoving.start();
-                    }
-                    break;
-                case 38:
-                    if (!playerMoving.isRunning()) {
-                        playerMoving.start();
-                    }
-                    break;
-                case 39:
-                    if (!playerMoving.isRunning()) {
-                        playerMoving.start();
-                    }
-                    break;
-                case 40:
-                    if (!playerMoving.isRunning()) {
-                        playerMoving.start();
-                    }
-                    break;
-            }
-        });
-
-        $(document).keyup(function (event) {
-            switch (event.keyCode) {
-                case 37:
-                    playerMoving.stop();
-                    player.image.animation('idleLeft');
-                    player.layer.draw();
-                    break;
-                case 38:
-                    playerMoving.stop();
-                    player.image.animation('idleUp');
-                    player.layer.draw();
-                    break;
-                case 39:
-                    playerMoving.stop();
-                    player.image.animation('idleRight');
-                    player.layer.draw();
-                    break;
-                case 40:
-                    playerMoving.stop();
-                    player.image.animation('idleDown');
-                    player.layer.draw();
-                    break;
-            }
-        });
-    }
-
     function gameOver(stage, player) {
+        clearInterval(addNewEnemy);
+        clearInterval(playerLifeDown);
+        clearInterval(collisionChekingShotsEnemies);
+        player.image.stop();
+        eventsPlayer.playerMoving.stop();
+
         displayPopUp(stage);
 
         function displayPopUp(stage) {
