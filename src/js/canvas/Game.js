@@ -19,19 +19,20 @@
             this.isGameOver = true;
             gameOver(stage.stage, player);
         }
-        shotFactory.shotsUpdate(player.life);
-        enemyFactory.enemiesUpdate(shotFactory.shots, player);
+        //shotFactory.shotsUpdate(player.life);
+        //enemyFactory.enemiesUpdate(shotFactory.shots, player);
+        shotsEnemiesColliding(shotFactory.shots, enemyFactory.enemies, player);
     }, 500);
 
-    var playerLifeDown = setInterval(function () {
-        player.life--;
-        gameSvgStatistics.setPlayerLife(player.life);
-        gameSvgStatistics.lifeBarUpdate();
-    }, 100);
+    //var playerLifeDown = setInterval(function () {
+    //    player.life -= 3;
+    //    gameSvgStatistics.setPlayerLife(player.life);
+    //    gameSvgStatistics.lifeBarUpdate();
+    //}, 1000);
 
     var addNewEnemy = setInterval(function () {
         enemyFactory.createEnemy();
-    }, 1000);
+    }, 5000);
 
     function eventsStart(player, obstacles) {
         var playerMoving = new Kinetic.Animation(function (frame) {
