@@ -1,4 +1,4 @@
-function Enemy(enemyImage,xCoord,yCoord){
+function Enemy(enemyImage, initialXCoord, initialYCoord) {
     this.image = enemyImage.clone();
     this.speed = 3;
     this.isForRemoving = false;
@@ -27,7 +27,7 @@ function Enemy(enemyImage,xCoord,yCoord){
         return this.image.getHeight();
     });
 
-    this.X = xCoord;
-    this.Y = yCoord;
+    this.X = initialXCoord;
+    this.Y = initialYCoord;
 
 }

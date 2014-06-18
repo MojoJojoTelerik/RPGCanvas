@@ -14,21 +14,21 @@
     startMusic();
     eventsStart(player, obstacles);
 
-    var mainLoop = setInterval(function () {
+    var collisionChekingShotsEnemies = setInterval(function () {
+        shotsEnemiesColliding(shotFactory.shots, enemyFactory.enemies, player);
+    }, 5);
+
+    var playerLifeDown = setInterval(function () {
+        player.life -= 5;
+
+        gameSvgStatistics.setPlayerLife(player.life);
+        gameSvgStatistics.lifeBarUpdate();
+
         if (player.life <= 0 && !this.isGameOver) {
             this.isGameOver = true;
             gameOver(stage.stage, player);
         }
-        //shotFactory.shotsUpdate(player.life);
-        //enemyFactory.enemiesUpdate(shotFactory.shots, player);
-        shotsEnemiesColliding(shotFactory.shots, enemyFactory.enemies, player);
-    }, 500);
-
-    //var playerLifeDown = setInterval(function () {
-    //    player.life -= 3;
-    //    gameSvgStatistics.setPlayerLife(player.life);
-    //    gameSvgStatistics.lifeBarUpdate();
-    //}, 1000);
+    }, 1000);
 
     var addNewEnemy = setInterval(function () {
         enemyFactory.createEnemy();
@@ -203,4 +203,10 @@
             audio.volume = sliderVolume.value;
         }
     }
+
+    Array.prototype.clone = function () {
+        return this.slice(0);
+    };
+
+    // clone object: jQuery.extend(true, {}, shots);
 }

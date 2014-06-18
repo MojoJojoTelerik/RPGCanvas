@@ -62,51 +62,29 @@
 }
 
 var shotsEnemiesColliding = function (shots, enemies, player) {
+    var shotsIndexesForRemoval = {};
+    var index;
+
     if (shots.length !== 0 && enemies.length !== 0) {
-        var shotsCloning = jQuery.extend(true, {}, shots);
-        var enemiesCloning = jQuery.extend(true, {}, enemies);
+        var shotsCloning = shots.clone();
+        var enemiesCloning = enemies.clone();
         
-        //console.log(shotsCloning);
-        //console.log(enemiesCloning);
-        console.log("enemies length" + enemies.length);
-
         var enemiesIndexesForRemoval = {};
-        var shotsIndexesForRemoval = {};
-
         var currentEnemy;
         var currentShot;
 
         for (var i = 0; i < shotsCloning.length; i++) {
             currentShot = shotsCloning[i];
-            console.log(currentShot);
 
             for (var j = 0; j < enemiesCloning.length; j++) {
                 currentEnemy = enemiesCloning[j];
 
-                if (detectCollisionShots(currentShot.image.clone(), currentEnemy.image.clone())) {
-                    console.log("collision detected");
+                if (detectCollision(currentShot.image, currentEnemy.image)) {
                     shotsIndexesForRemoval[i] = true;
                     enemiesIndexesForRemoval[j] = true;
                     player.life += 50;
                 }
             }
-        }
-
-        var index;
-
-        for (var key in shots) {
-            if (shots[key].isForRemoving) {
-                shotsIndexesForRemoval[key] = true;
-            }
-        }
-
-        for (index in shotsIndexesForRemoval) {
-            var shotForRemoving = shots[index];
-
-            shotForRemoving.animate.stop();
-            shotForRemoving.image.remove();
-
-            shots.splice(index, 1);
         }
 
         for (index in enemiesIndexesForRemoval) {
@@ -115,6 +93,21 @@ var shotsEnemiesColliding = function (shots, enemies, player) {
             enemyForRemoving.image.remove();
             enemies.splice(index, 1);
         }
+    }
+
+    for (var key in shots) {
+        if (shots[key].isForRemoving) {
+            shotsIndexesForRemoval[key] = true;
+        }
+    }
+
+    for (index in shotsIndexesForRemoval) {
+        var shotForRemoving = shots[index];
+
+        shotForRemoving.animate.stop();
+        shotForRemoving.image.remove();
+
+        shots.splice(index, 1);
     }
 }
 
@@ -130,31 +123,6 @@ function detectCollision(rect1, rect2) {
     var rec2BottomY = rect2.getY() + rect2.getHeight();
     var rec2LeftX = rect2.getX();
     var rec2RightX = rect2.getX() + rect2.getWidth();
-
-    if (!(rec1BottomY < rec2TopY ||
-     rec2BottomY < rec1TopY ||
-     rec1LeftX > rec2RightX ||
-     rec2LeftX > rec1RightX)) {
-        status = true;
-    }
-
-    return status;
-}
-
-function detectCollisionShots(rect1, rect2) {
-    var status = false;
-
-    var rec1TopY = rect1.getY();
-    var rec1BottomY = rect1.getY() + rect1.getHeight();
-    var rec1LeftX = rect1.getX();
-    var rec1RightX = rect1.getX() + rect1.getWidth();
-    console.log(rec1TopY, rec1BottomY, rec1LeftX, rec1RightX);
-
-    var rec2TopY = rect2.getY();
-    var rec2BottomY = rect2.getY() + rect2.getHeight();
-    var rec2LeftX = rect2.getX();
-    var rec2RightX = rect2.getX() + rect2.getWidth();
-    console.log(rec2TopY, rec2BottomY, rec2LeftX, rec2RightX);
 
     if (!(rec1BottomY < rec2TopY ||
      rec2BottomY < rec1TopY ||
